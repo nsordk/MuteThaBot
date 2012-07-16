@@ -1,0 +1,8 @@
+name: MuteThaBot
+main: info.plugmania.MuteThaBot.MuteThaBot
+version: 1.0.0
+
+permissions:
+    MuteThaBot.*:
+        description: allows bypass of authenticate message sent
+        default: op
