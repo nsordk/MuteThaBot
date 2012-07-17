@@ -2,12 +2,15 @@ package info.plugmania.MuteThaBot;
 
 import java.util.Random;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MuteThaBot extends JavaPlugin {
@@ -35,7 +38,6 @@ public class MuteThaBot extends JavaPlugin {
 	    @EventHandler
 	    public void onPlayerChat(PlayerChatEvent event) {
 	    	if(auth.isAuth!=true) {
-	    		getLogger().info("Tracked:" + event.getMessage());
 	    		if(auth.rndChar==event.getMessage().toCharArray()[0]) {
 	    			auth.isAuth = true;
 	    			auth.playerAccess();
@@ -43,7 +45,15 @@ public class MuteThaBot extends JavaPlugin {
 	    		else auth.playerQuit();
 	    		event.setCancelled(true);
 	    	}
-	    }	
+	    }
+	    
+	    @EventHandler
+	    public void onPlayerMove(PlayerMoveEvent event) {
+	    	if(auth.isAuth!=true) {
+	    		Location loc = event.getFrom();
+	    		event.setTo(loc);
+	    	}	
+	    }
 	}
 	
 	public MuteThaBot() {
@@ -68,11 +78,11 @@ public class MuteThaBot extends JavaPlugin {
 		}
 		
 		void startAuth(){
-			player.sendMessage("Please type '" + rndChar + "' now to authenticate yourself");
+			player.sendMessage(ChatColor.GOLD + "[MuteThaBot] Please type '" + rndChar + "' now to authenticate yourself");
 		}
 		
 		void playerAccess() {
-			player.sendMessage("Thank you!");
+			player.sendMessage(ChatColor.GOLD + "[MuteThaBot] Thank you!");
 		}
 		
 		void playerQuit(){
