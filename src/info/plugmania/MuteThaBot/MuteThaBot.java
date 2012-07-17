@@ -31,6 +31,7 @@ public class MuteThaBot extends JavaPlugin {
 	    @EventHandler
 	    public void onPlayerChat(PlayerChatEvent event) {
 	    	getLogger().info("Tracked:" + event.getMessage());
+	    	if(auth.rndChar==event.getMessage()) auth.isAuth = true;
 	    }
 	}
 	
