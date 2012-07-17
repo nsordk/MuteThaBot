@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MuteThaBot extends JavaPlugin {
@@ -27,7 +28,7 @@ public class MuteThaBot extends JavaPlugin {
 	}
 	
 	public class PluginListener implements Listener {
-	    @EventHandler
+		@EventHandler
 	    public void onPlayerLogin(PlayerJoinEvent event) {
 	    	auth.player = event.getPlayer();
 	    	auth.name = event.getPlayer().getName();
@@ -54,6 +55,12 @@ public class MuteThaBot extends JavaPlugin {
 	    		event.setTo(loc);
 	    	}	
 	    }
+	    
+	    @EventHandler
+	    public void onPlayerQuit(PlayerQuitEvent event) {
+	    	auth.isAuth = false;	    
+	    }
+	    
 	}
 	
 	public MuteThaBot() {
