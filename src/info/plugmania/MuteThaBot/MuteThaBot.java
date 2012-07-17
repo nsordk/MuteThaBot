@@ -34,14 +34,16 @@ public class MuteThaBot extends JavaPlugin {
 	    
 	    @EventHandler
 	    public void onPlayerChat(PlayerChatEvent event) {
-	    	getLogger().info("Tracked:" + event.getMessage());
-	    	if(auth.rndChar==event.getMessage().toCharArray()[0]) {
-	    		auth.isAuth = true;
-	    		auth.playerAccess();
+	    	if(auth.isAuth!=true) {
+	    		getLogger().info("Tracked:" + event.getMessage());
+	    		if(auth.rndChar==event.getMessage().toCharArray()[0]) {
+	    			auth.isAuth = true;
+	    			auth.playerAccess();
+	    		}
+	    		else auth.playerQuit();
+	    		event.setCancelled(true);
 	    	}
-	    	else auth.playerQuit();
-	    	event.setCancelled(true);
-	    }
+	    }	
 	}
 	
 	public MuteThaBot() {
@@ -75,7 +77,7 @@ public class MuteThaBot extends JavaPlugin {
 		
 		void playerQuit(){
 			getLogger().info(name + " failed authentication");
-			player.sendMessage("Goodbye!");
+			player.kickPlayer("Authentication failed, Goodbye!");
 		}
 	}
 	
