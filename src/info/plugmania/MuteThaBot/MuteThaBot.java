@@ -12,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MuteThaBot extends JavaPlugin {
 
+	Authorisation auth = new Authorisation(this);
+	
 	public void onDisable (){
 		getLogger().info("MuteThaBot is now disabled.");
 	}
@@ -24,14 +26,20 @@ public class MuteThaBot extends JavaPlugin {
 	public class PluginListener implements Listener {
 	    @EventHandler
 	    public void onPlayerLogin(PlayerJoinEvent event) {
-	    	Authorisation auth = new Authorisation(false,event.getPlayer());
-	    	auth.startAuth(event.getPlayer());	    
+	    	auth.player = event.getPlayer();
+	    	auth.name = event.getPlayer().getName();
+	    	auth.rndChar = auth.genRandChar();
+	    	auth.startAuth();	    
 	    }
 	    
 	    @EventHandler
 	    public void onPlayerChat(PlayerChatEvent event) {
 	    	getLogger().info("Tracked:" + event.getMessage());
-	    	if(auth.rndChar==event.getMessage()) auth.isAuth = true;
+	    	if(auth.rndChar==event.getMessage().toCharArray()[0]) {
+	    		auth.isAuth = true;
+	    		auth.playerAccess();
+	    	}
+	    	else auth.playerQuit();
 	    }
 	}
 	
@@ -44,10 +52,10 @@ public class MuteThaBot extends JavaPlugin {
 		String name;
 		Player player;
 		char rndChar;
-			
-		Authorisation(boolean isAuth, Player player) {
-			name = player.getName();
-			rndChar = genRandChar();
+	
+		MuteThaBot plugin;
+		public Authorisation(MuteThaBot instance){
+		plugin=instance;
 		}
 		
 		char genRandChar() {
@@ -56,9 +64,17 @@ public class MuteThaBot extends JavaPlugin {
 	    	return c;
 		}
 		
-		void startAuth(Player player){
+		void startAuth(){
 			getLogger().info("Starting auth on " + name);
 			player.sendMessage("Please type '" + rndChar + "' now to authenticate yourself");
+		}
+		
+		void playerAccess() {
+			player.sendMessage("Thank you!");
+		}
+		
+		void playerQuit(){
+			player.sendMessage("Goodbye!");
 		}
 	}
 	
