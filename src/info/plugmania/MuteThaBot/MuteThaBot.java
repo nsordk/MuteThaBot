@@ -40,6 +40,7 @@ public class MuteThaBot extends JavaPlugin {
 	    		auth.playerAccess();
 	    	}
 	    	else auth.playerQuit();
+	    	event.setCancelled(true);
 	    }
 	}
 	
@@ -65,7 +66,6 @@ public class MuteThaBot extends JavaPlugin {
 		}
 		
 		void startAuth(){
-			getLogger().info("Starting auth on " + name);
 			player.sendMessage("Please type '" + rndChar + "' now to authenticate yourself");
 		}
 		
@@ -74,6 +74,7 @@ public class MuteThaBot extends JavaPlugin {
 		}
 		
 		void playerQuit(){
+			getLogger().info(name + " failed authentication");
 			player.sendMessage("Goodbye!");
 		}
 	}
